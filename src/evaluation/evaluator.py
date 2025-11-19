@@ -1,7 +1,9 @@
 import numpy as np
+import torch
+from typing import Union
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-def evaluate_model_normalized(model, loader, scaler, device='cpu'):
+def evaluate_model_normalized(model, loader, scaler, device: Union[str, torch.device] = torch.device("cpu")):
     model.eval()
     preds, trues = [], []
     
