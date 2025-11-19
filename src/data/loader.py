@@ -9,6 +9,7 @@ def load_stock_csv(path: str):
     df["daily_return"] = df["close"].pct_change()
     df["close_log"] = np.log(df["close"])
 
-    df["daily_return"].fillna(0, inplace=True)
+    # df["daily_return"].fillna(0, inplace=True)
+    df["daily_return"] = df["daily_return"].fillna(0)
 
     return df

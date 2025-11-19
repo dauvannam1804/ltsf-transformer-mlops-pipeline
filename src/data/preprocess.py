@@ -56,6 +56,20 @@ class NormalizedDataset(Dataset):
         return torch.FloatTensor(x_norm), torch.FloatTensor(y_norm)
 
 
+def create_univariate_datasets(df, seq_lengths, pred_len=7, target_col="close"):
+    """Create univariate datasets for different sequence lengths"""
+    datasets = {}
+
+    for seq_len in seq_lengths:
+        dataset = UnivariateTimeSeriesDataset(
+        data=df, seq_len=seq_len, pred_len=pred_len,
+        target_col=target_col, normalize=False
+        )
+        datasets[f"{seq_len}d"] = dataset
+
+    return datasets
+
+
 def create_time_based_splits(dataset, train_ratio=0.7, val_ratio=0.15):
     total_len = len(dataset)
     train_len = int(total_len * train_ratio)
