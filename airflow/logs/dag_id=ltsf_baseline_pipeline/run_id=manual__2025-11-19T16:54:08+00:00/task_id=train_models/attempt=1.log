@@ -1,0 +1,90 @@
+{"timestamp":"2025-11-19T16:54:14.490082Z","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2025-11-19T16:54:14.491010Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/ltsf_pipeline_dag.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2025-11-19T16:54:18.073880Z","level":"info","event":"XCom received: {'dag': <DAG: ltsf_baseline_pipeline>, 'inlets': [], 'map_index_template': None, 'outlets': [], 'run_id': 'manual__2025-11-19T16:54:08+00:00', 'task': <Task(PythonOperator): train_models>, 'task_instance': RuntimeTaskInstance(id=UUID('019a9d09-b3fa-74d8-b504-c1150a59c2a8'), task_id='train_models', dag_id='ltsf_baseline_pipeline', run_id='manual__2025-11-19T16:54:08+00:00', try_number=1, dag_version_id=UUID('019a9d06-50f7-7ba2-aadf-097f0b1484f2'), map_index=-1, hostname='65aaa85ba96d', context_carrier={}, task=<Task(PythonOperator): train_models>, bundle_instance=LocalDagBundle(name=dags-folder), max_tries=0, start_date=datetime.datetime(2025, 11, 19, 16, 54, 14, 443464, tzinfo=datetime.timezone.utc), end_date=None, state=<TaskInstanceState.RUNNING: 'running'>, is_mapped=False, rendered_map_index=None), 'ti': RuntimeTaskInstance(id=UUID('019a9d09-b3fa-74d8-b504-c1150a59c2a8'), task_id='train_models', dag_id='ltsf_baseline_pipeline', run_id='manual__2025-11-19T16:54:08+00:00', try_number=1, dag_version_id=UUID('019a9d06-50f7-7ba2-aadf-097f0b1484f2'), map_index=-1, hostname='65aaa85ba96d', context_carrier={}, task=<Task(PythonOperator): train_models>, bundle_instance=LocalDagBundle(name=dags-folder), max_tries=0, start_date=datetime.datetime(2025, 11, 19, 16, 54, 14, 443464, tzinfo=datetime.timezone.utc), end_date=None, state=<TaskInstanceState.RUNNING: 'running'>, is_mapped=False, rendered_map_index=None), 'outlet_events': <airflow.sdk.execution_time.context.OutletEventAccessors object at 0x7e4a513aca10>, 'inlet_events': InletEventsAccessors(_inlets=[], _assets={}, _asset_aliases={}), 'macros': <MacrosAccessor (dynamic access to macros)>, 'params': {}, 'var': {'json': <VariableAccessor (dynamic access)>, 'value': <VariableAccessor (dynamic access)>}, 'conn': <ConnectionAccessor (dynamic access)>, 'dag_run': DagRun(dag_id='ltsf_baseline_pipeline', run_id='manual__2025-11-19T16:54:08+00:00', logical_date=datetime.datetime(2025, 11, 19, 16, 54, 8, tzinfo=datetime.timezone.utc), data_interval_start=datetime.datetime(2025, 11, 19, 16, 54, 8, tzinfo=datetime.timezone.utc), data_interval_end=datetime.datetime(2025, 11, 19, 16, 54, 8, tzinfo=datetime.timezone.utc), run_after=datetime.datetime(2025, 11, 19, 16, 54, 8, tzinfo=datetime.timezone.utc), start_date=datetime.datetime(2025, 11, 19, 16, 54, 10, 482519, tzinfo=datetime.timezone.utc), end_date=None, clear_number=0, run_type=<DagRunType.MANUAL: 'manual'>, state=<DagRunState.RUNNING: 'running'>, conf={}, triggering_user_name='airflow', consumed_asset_events=[]), 'triggering_asset_events': TriggeringAssetEventsAccessor(_events=defaultdict(<class 'list'>, {})), 'task_instance_key_str': 'ltsf_baseline_pipeline__train_models__20251119', 'task_reschedule_count': 0, 'prev_start_date_success': <Proxy at 0x7e4a197cb280 with factory <function RuntimeTaskInstance.get_template_context.<locals>.<lambda> at 0x7e4a17e276a0>>, 'prev_end_date_success': <Proxy at 0x7e4a19f90f80 with factory <function RuntimeTaskInstance.get_template_context.<locals>.<lambda> at 0x7e4a17e271a0>>, 'logical_date': DateTime(2025, 11, 19, 16, 54, 8, tzinfo=Timezone('UTC')), 'ds': '2025-11-19', 'ds_nodash': '20251119', 'ts': '2025-11-19T16:54:08+00:00', 'ts_nodash': '20251119T165408', 'ts_nodash_with_tz': '20251119T165408+0000', 'data_interval_end': DateTime(2025, 11, 19, 16, 54, 8, tzinfo=Timezone('UTC')), 'data_interval_start': DateTime(2025, 11, 19, 16, 54, 8, tzinfo=Timezone('UTC')), 'prev_data_interval_start_success': <Proxy at 0x7e4a197bad00 with factory <function RuntimeTaskInstance.get_template_context.<locals>.<lambda> at 0x7e4a17e48900>>, 'prev_data_interval_end_success': <Proxy at 0x7e4a197b2e40 with factory <function RuntimeTaskInstance.get_template_context.<locals>.<lambda> at 0x7e4a17e489a0>>, 'templates_dict': None}","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:18.089072Z","level":"info","event":"splits_path: data/processed/norm_splits.pkl","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:18.089191Z","level":"info","event":"scaler_path: data/processed/scaler.pkl","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:18.095930Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:18.096105Z","level":"info","event":"Training Linear for horizon 7d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:23.000664Z","level":"info","event":"Epoch 10/50 | Train 0.0469 | Val 0.0440","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:26.673526Z","level":"info","event":"Epoch 20/50 | Train 0.0206 | Val 0.0021","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:30.084617Z","level":"info","event":"Epoch 30/50 | Train 0.0204 | Val 0.0016","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:35.055620Z","level":"info","event":"Epoch 40/50 | Train 0.0202 | Val 0.0015","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:38.811755Z","level":"info","event":"Epoch 50/50 | Train 0.0197 | Val 0.0015","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:38.950813Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:38.950939Z","level":"info","event":"Training DLinear for horizon 7d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:43.772083Z","level":"info","event":"Epoch 10/50 | Train 0.0488 | Val 0.0548","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:48.554758Z","level":"info","event":"Epoch 20/50 | Train 0.0208 | Val 0.0019","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:52.928370Z","level":"info","event":"Epoch 30/50 | Train 0.0201 | Val 0.0014","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:54:57.811187Z","level":"info","event":"Epoch 40/50 | Train 0.0190 | Val 0.0013","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:02.456817Z","level":"info","event":"Epoch 50/50 | Train 0.0187 | Val 0.0013","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:02.613320Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:02.613476Z","level":"info","event":"Training NLinear for horizon 7d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:08.026400Z","level":"info","event":"Epoch 10/50 | Train 0.0175 | Val 0.0042","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:13.114714Z","level":"info","event":"Epoch 20/50 | Train 0.0136 | Val 0.0013","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:16.888894Z","level":"info","event":"Epoch 30/50 | Train 0.0135 | Val 0.0012","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:21.106398Z","level":"info","event":"Epoch 40/50 | Train 0.0137 | Val 0.0012","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:25.284631Z","level":"info","event":"Epoch 50/50 | Train 0.0134 | Val 0.0012","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:25.400731Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:25.400905Z","level":"info","event":"Training Linear for horizon 30d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:29.567165Z","level":"info","event":"Epoch 10/50 | Train 0.0377 | Val 0.0015","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:33.919168Z","level":"info","event":"Epoch 20/50 | Train 0.0274 | Val 0.0015","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:37.894314Z","level":"info","event":"Epoch 30/50 | Train 0.0243 | Val 0.0014","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:41.976435Z","level":"info","event":"Epoch 40/50 | Train 0.0222 | Val 0.0014","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:47.247901Z","level":"info","event":"Epoch 50/50 | Train 0.0214 | Val 0.0013","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:47.344611Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:47.344736Z","level":"info","event":"Training DLinear for horizon 30d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:51.845316Z","level":"info","event":"Epoch 10/50 | Train 0.0322 | Val 0.0014","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:55:56.570500Z","level":"info","event":"Epoch 20/50 | Train 0.0237 | Val 0.0012","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:01.502857Z","level":"info","event":"Epoch 30/50 | Train 0.0210 | Val 0.0011","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:07.023534Z","level":"info","event":"Epoch 40/50 | Train 0.0193 | Val 0.0014","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:11.938684Z","level":"info","event":"Epoch 50/50 | Train 0.0184 | Val 0.0011","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:12.075332Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:12.075487Z","level":"info","event":"Training NLinear for horizon 30d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:16.239625Z","level":"info","event":"Epoch 10/50 | Train 0.0137 | Val 0.0012","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:21.751189Z","level":"info","event":"Epoch 20/50 | Train 0.0136 | Val 0.0011","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:26.382559Z","level":"info","event":"Epoch 30/50 | Train 0.0135 | Val 0.0011","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:30.545532Z","level":"info","event":"Epoch 40/50 | Train 0.0134 | Val 0.0011","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:34.395250Z","level":"info","event":"Epoch 50/50 | Train 0.0134 | Val 0.0011","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:34.510936Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:34.511128Z","level":"info","event":"Training Linear for horizon 120d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:38.610565Z","level":"info","event":"Epoch 10/50 | Train 0.0340 | Val 0.0019","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:42.841398Z","level":"info","event":"Epoch 20/50 | Train 0.0246 | Val 0.0019","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:46.693141Z","level":"info","event":"Epoch 30/50 | Train 0.0223 | Val 0.0018","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:50.758664Z","level":"info","event":"Epoch 40/50 | Train 0.0206 | Val 0.0015","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:55.445939Z","level":"info","event":"Epoch 50/50 | Train 0.0196 | Val 0.0015","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:55.644892Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:56:55.648920Z","level":"info","event":"Training DLinear for horizon 120d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:00.561643Z","level":"info","event":"Epoch 10/50 | Train 0.0361 | Val 0.0045","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:05.495718Z","level":"info","event":"Epoch 20/50 | Train 0.0245 | Val 0.0017","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:09.603018Z","level":"info","event":"Epoch 30/50 | Train 0.0217 | Val 0.0013","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:14.737263Z","level":"info","event":"Epoch 40/50 | Train 0.0197 | Val 0.0018","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:19.529742Z","level":"info","event":"Epoch 50/50 | Train 0.0185 | Val 0.0012","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:19.634994Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:19.635125Z","level":"info","event":"Training NLinear for horizon 120d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:23.498540Z","level":"info","event":"Epoch 10/50 | Train 0.0142 | Val 0.0015","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:27.901306Z","level":"info","event":"Epoch 20/50 | Train 0.0136 | Val 0.0013","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:33.545798Z","level":"info","event":"Epoch 30/50 | Train 0.0133 | Val 0.0012","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:37.746776Z","level":"info","event":"Epoch 40/50 | Train 0.0131 | Val 0.0014","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:41.525369Z","level":"info","event":"Epoch 50/50 | Train 0.0130 | Val 0.0013","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:41.618535Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:41.618670Z","level":"info","event":"Training Linear for horizon 480d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:45.038571Z","level":"info","event":"Epoch 10/50 | Train 0.0288 | Val 0.0284","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:48.441690Z","level":"info","event":"Epoch 20/50 | Train 0.0186 | Val 0.0178","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:51.976349Z","level":"info","event":"Epoch 30/50 | Train 0.0160 | Val 0.0196","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:55.243264Z","level":"info","event":"Epoch 40/50 | Train 0.0143 | Val 0.0182","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:58.518568Z","level":"info","event":"Epoch 50/50 | Train 0.0131 | Val 0.0203","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:58.598390Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:57:58.598556Z","level":"info","event":"Training DLinear for horizon 480d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:02.290885Z","level":"info","event":"Epoch 10/50 | Train 0.0278 | Val 0.0269","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:05.816351Z","level":"info","event":"Epoch 20/50 | Train 0.0192 | Val 0.0209","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:10.773012Z","level":"info","event":"Epoch 30/50 | Train 0.0151 | Val 0.0239","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:14.288621Z","level":"info","event":"Epoch 40/50 | Train 0.0128 | Val 0.0301","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:17.482475Z","level":"info","event":"Epoch 50/50 | Train 0.0115 | Val 0.0200","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:17.607985Z","level":"info","event":"********************************************************************************","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:17.608183Z","level":"info","event":"Training NLinear for horizon 480d...","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:21.329070Z","level":"info","event":"Epoch 10/50 | Train 0.0134 | Val 0.0114","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:25.161138Z","level":"info","event":"Epoch 20/50 | Train 0.0120 | Val 0.0094","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:28.586499Z","level":"info","event":"Epoch 30/50 | Train 0.0110 | Val 0.0109","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:32.282794Z","level":"info","event":"Epoch 40/50 | Train 0.0107 | Val 0.0130","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:36.879909Z","level":"info","event":"Epoch 50/50 | Train 0.0099 | Val 0.0124","logger":"task.stdout"}
+{"timestamp":"2025-11-19T16:58:38.375146Z","level":"info","event":"Done. Returned value was: None","logger":"airflow.task.operators.airflow.providers.standard.operators.python.PythonOperator","filename":"python.py","lineno":215}
