@@ -3,8 +3,9 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import numpy as np
+from typing import Union
 
-def train_model(model, train_loader, val_loader, num_epochs=50, lr=0.001, device="cpu"):
+def train_model(model, train_loader, val_loader, num_epochs=50, lr=0.001, device: Union[str, torch.device] = torch.device("cpu")):
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
