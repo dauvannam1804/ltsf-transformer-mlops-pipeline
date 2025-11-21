@@ -1,19 +1,30 @@
-def plot_loss_curves(loss_history, horizons, save_dir=None):
-    import matplotlib.pyplot as plt
-    import os
+import matplotlib
+matplotlib.use("Agg")  # tránh lỗi khi không có GUI (Airflow container)
+import matplotlib.pyplot as plt
 
-    if save_dir:
-        os.makedirs(save_dir, exist_ok=True)
+def plot_single_loss_curve(train_losses, val_losses, figure_path):
+    """
+    Plot train/validation loss curves and save to file.
 
-    for hz in horizons:
-        plt.figure(figsize=(10, 6))
-        for model in loss_history:
-            if hz in loss_history[model]:
-                plt.plot(loss_history[model][hz]["train"], label=f"{model} Train")
-                plt.plot(loss_history[model][hz]["val"], "--", label=f"{model} Val")
-        plt.legend()
-        plt.title(f"Loss curves ({hz})")
+    Args:
+        train_losses (list): loss từng epoch của train
+        val_losses (list): loss từng epoch của val
+        figure_path (str): đường dẫn file PNG để lưu hình
+    """
+    plt.figure(figsize=(6, 4))
 
-        if save_dir:
-            plt.savefig(os.path.join(save_dir, f"loss_{hz}.png"))
-        plt.close()
+    plt.plot(train_losses, label="Train Loss", antialiased=False)
+    plt.plot(val_losses, label="Val Loss", antialiased=False)
+
+    plt.xlabel("Epoch")
+    plt.ylabel("Loss")
+    plt.title("Training & Validation Loss")
+    plt.legend()
+
+    # Giảm độ nặng ảnh
+    plt.savefig(
+        figure_path,
+        dpi=80,
+        bbox_inches="tight",
+    )
+    plt.close()

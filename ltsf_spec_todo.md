@@ -62,9 +62,9 @@
 
 ### 3.1. Requirements & Setup
 
--   [ ] Tạo môi trường Conda / Virtualenv.
--   [ ] Cài đặt thư viện: PyTorch, MLflow, pandas, Airflow, matplotlib.
--   [ ] Tạo repository theo cấu trúc:
+-   [X] Tạo môi trường Conda / Virtualenv.
+-   [X] Cài đặt thư viện: PyTorch, MLflow, pandas, Airflow, matplotlib.
+-   [X] Tạo repository theo cấu trúc:
 
 ```{=html}
 <!-- -->
@@ -84,40 +84,40 @@
 
 ### 3.2. Data Module
 
--   [ ] Viết script `load_data.py`.
--   [ ] Viết script `preprocess.py`.
--   [ ] Triển khai rolling window tạo dataset.
+-   [X] Viết script `load_data.py`.
+-   [X] Viết script `preprocess.py`.
+-   [X] Triển khai rolling window tạo dataset.
 -   [ ] Lưu version dataset bằng MLflow (optional).
 
 ------------------------------------------------------------------------
 
 ### 3.3. Baseline Model Module
 
--   [ ] Viết lớp `LinearModel`.
--   [ ] Viết lớp `NLinearModel`.
--   [ ] Viết lớp `DLinearModel`.
--   [ ] Viết hàm train/eval chung.
+-   [X] Viết lớp `LinearModel`.
+-   [X] Viết lớp `NLinearModel`.
+-   [X] Viết lớp `DLinearModel`.
+-   [X] Viết hàm train/eval chung.
 
 ------------------------------------------------------------------------
 
 ### 3.4. Transformer Hybrid Module
 
--   [ ] Thiết kế kiến trúc:
+-   [X] Thiết kế kiến trúc:
     -   Input = concat(trend_out, seasonal_out)
     -   Transformer Encoder (1--2 layers)
     -   Output Layer → forecast
--   [ ] Viết lớp `HybridDLinearTransformer`.
--   [ ] Viết script train hybrid model.
+-   [X] Viết lớp `HybridDLinearTransformer`.
+-   [X] Viết script train hybrid model.
 
 ------------------------------------------------------------------------
 
 ### 3.5. Training Module + MLflow
 
--   [ ] Viết `train.py`:
-    -   [ ] Baseline training loop
-    -   [ ] Hybrid training loop
+-   [x] Viết `train.py`:
+    -   [x] Baseline training loop
+    -   [x] Hybrid training loop
     -   [ ] MLflow experiment tracking
--   [ ] Log metrics:
+-   [x] Log metrics:
     -   Train/Val loss
     -   MAE, RMSE, MAPE
 -   [ ] Log artifacts:

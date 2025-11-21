@@ -1,1 +1,5 @@
 __pycache__
+airflow/config
+airflow/logs
+data/train_results
+mlflow/mlartifacts

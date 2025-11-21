@@ -4,4 +4,8 @@ A spec-driven project for Long-Term Time Series Forecasting (LTSF) that extends 
 
 uv init
 
-gdown 18J_Z8b-qMMj9wm5eGyQ-1nPS16PfRePK
+uv pip install torch==2.1.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+# vào folder airflow
+docker compose build --no-cache
+docker compose up -d
