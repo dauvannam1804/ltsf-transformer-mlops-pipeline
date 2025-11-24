@@ -6,9 +6,7 @@ Dự báo giá cổ phiếu luôn được xem là một trong những bài toá
 
 Trong bối cảnh đó, nhiều người thường cho rằng chỉ những mô hình cực kỳ phức tạp mới đủ khả năng xử lý dữ liệu tài chính. Tuy nhiên, hành trình khám phá các mô hình LTSF-Linear (Linear, NLinear, DLinear) lại mang đến một góc nhìn hoàn toàn khác. Đôi khi, chính sự đơn giản nhưng có mục đích rõ ràng mới tạo ra hiệu quả thực sự.
 
-
-![Pipeline Diagram](images/pipeline.png)
-
+![Pipeline Diagram](https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/pipeline.png)
 
 Để kiểm chứng các mô hình dự báo này, một pipeline hoàn chỉnh đã được xây dựng, bao gồm:
 
@@ -117,6 +115,8 @@ $$
 - Phù hợp với chuỗi có xu hướng hoặc mùa vụ rõ ràng  
 - Khi dữ liệu có trend, DLinear thường chính xác hơn Linear hay NLinear
 
+---
+
 ### HybridDLinearTransformer – kết hợp DLinear và Transformer cho mùa vụ
 
 HybridDLinearTransformer mở rộng DLinear bằng cách kết hợp **một nhánh Transformer** để dự báo phần seasonal/dao động ngắn hạn, trong khi nhánh trend vẫn dùng Linear. Cụ thể:  
@@ -136,7 +136,6 @@ $$
 - Giữ độ nhẹ, ổn định của DLinear  
 - Transformer tăng khả năng nắm bắt các seasonal phức tạp  
 - Thích hợp chuỗi có cả trend dài hạn và dao động ngắn hạn
-
 
 ## 4. Cấu trúc project
 
@@ -192,55 +191,57 @@ Toàn bộ project được tổ chức theo cấu trúc module hóa, tách bi�
        └── plotting.py
 ```
 
+Toàn bộ source code dự án có thể xem tại [**đây**](https://github.com/dauvannam1804/ltsf-transformer-mlops-pipeline) 
+
 ## 5. Xây dựng ML Pipeline bằng Apache Airflow
 
 **Apache Airflow** là một công cụ mã nguồn mở giúp **tự động hóa workflow** trong các dự án Data & ML.  
 Airflow cho phép định nghĩa **DAG (Directed Acyclic Graph)**, tức luồng các task có thứ tự rõ ràng, để thực hiện tuần tự hoặc song song.  
-![Dag](images/airflow/dags.png)
+### Các Task trong DAG `ltsf_baseline_pipeline`
+<div align="center">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/airflow/dags.png" alt="Dag pipeline" width="100%">
+</div>
+
 Với Airflow, các task như **load dữ liệu, huấn luyện mô hình** đều có thể tự động chạy, dễ theo dõi và tái lập.
 
 ---
 
 ### Các Task trong DAG `ltsf_baseline_pipeline`
 <div align="center">
-  <img src="images/airflow/dag_pipe_line.png" alt="Dag pipeline" width="80%">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/airflow/dag_pipe_line.png" alt="Dag pipeline" width="100%">
 </div>
 
 #### Task 1 — `load_and_prepare_data`
-- **Mục tiêu:** Chuẩn bị dữ liệu cho các mô hình LTSF
-- **Chi tiết công việc:**
+**Mục tiêu:** Chuẩn bị dữ liệu cho các mô hình LTSF
+**Chi tiết công việc:**
   - Đọc dữ liệu raw từ CSV (`data/raw/VIC.csv`)  
   - Tạo các **univariate datasets** với nhiều look-back windows `[7, 30, 120, 480]`  
   - Chia thành **train/validation/test splits** theo thời gian  
   - Chuẩn hóa dữ liệu (normalize) để mô hình học ổn định  
   - Lưu các splits và scaler ra file pickle trong `data/processed/`  
-- **XCom:** Push đường dẫn của normalized splits và scaler để task tiếp theo sử dụng
+  
+**XCom:** Push đường dẫn của normalized splits và scaler để task tiếp theo sử dụng
 
 ---
 
 #### Task 2 — `train_models`
-- **Mục tiêu:** Huấn luyện mô hình và lưu kết quả
-- **Chi tiết công việc:**
+**Mục tiêu:** Huấn luyện mô hình và lưu kết quả
+**Chi tiết công việc:**
   - Pull dữ liệu đã chuẩn hóa từ Task 1 qua **XCom**  
   - Huấn luyện các mô hình:  
     - **Linear** – dự báo trực tiếp  
     - **NLinear** – dự báo với dữ liệu đã re-centered  
     - **DLinear** – tách trend và seasonal  
-    - **HybridDLinearTransformer** – mô hình kết hợp Linear và Transformer  
-  - Huấn luyện trên các horizon khác nhau: 7d, 30d, 120d, 480d  
-  - Lưu biểu đồ loss và scaler  
-  - Lưu toàn bộ history và checkpoints cho các mô hình
+    - **HybridDLinearTransformer** – mô hình kết hợp Linear và Transformer 
+    
+Huấn luyện trên các horizon khác nhau: 7d, 30d, 120d, 480d  
+Lưu biểu đồ loss và scaler  
+Lưu toàn bộ history và checkpoints cho các mô hình
 
 ---
 
-DAG Flow
-
-```
-load_and_prepare_data --> train_models
-```
-
-- Các task được kết nối theo thứ tự tuần tự  
-- **XCom** dùng để truyền paths, artifacts giữa các task
+Các task được kết nối theo thứ tự tuần tự  
+**XCom** dùng để truyền paths, artifacts giữa các task
 
 **Lưu ý về XCom:**  
 
@@ -260,7 +261,7 @@ XCom thích hợp cho dữ liệu **nhỏ và metadata**, không nên dùng đ�
 Trigger DAG: Chọn DAG ltsf_baseline_pipeline và nhấn nút Trigger.
 
 <div align="center">
-  <img src="images/airflow/trigger_pipeline.png" alt="Trigger Dag pipeline" width="70%">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/airflow/trigger_pipeline.png" alt="Trigger Dag pipeline" width="100%">
 </div>
 
 Lưu ý: Đảm bảo tích chọn "Unpause... on trigger". Mặc định DAG thường ở trạng thái Paused, nếu không bật tùy chọn này, Scheduler sẽ bỏ qua và pipeline sẽ bị treo ở trạng thái chờ (Queued) mãi mãi.
@@ -270,9 +271,8 @@ Theo dõi: Sau khi kích hoạt, luồng công việc sẽ chạy tuần tự t�
 Bên cạnh kích hoạt thủ công (Manual), hệ thống cũng hỗ trợ chạy tự động theo lịch trình (Schedule/Cron), qua dòng lệnh (CLI) hoặc REST API cho các kịch bản production.
 
 <div align="center">
-  <img src="images/airflow/airflow_training_task.png" alt="View Dag log" width="60%">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/airflow/airflow_training_task.png" alt="View Dag log" width="100%">
 </div>
-
 
 ## 6. Theo dõi thí nghiệm bằng MLflow
 
@@ -289,45 +289,61 @@ Khi số lượng thí nghiệm tăng lên, MLflow cho phép lưu lại siêu th
 Đây là giao diện Dashboard chính (Home) của MLflow Tracking Server. Khu vực quan trọng nhất là bảng Experiments (Thí nghiệm), nơi liệt kê toàn bộ các dự án đang được theo dõi.
 Trong hình, ta thấy sự xuất hiện của experiment tên là `ltsf_baseline`. Điều này xác nhận kết nối thành công: Pipeline từ Airflow đã tự động khởi tạo experiment này để chuẩn bị lưu trữ các chỉ số huấn luyện (metrics) và model (artifacts) sắp tới.
 <div align="center">
-  <img src="images/mlflow/mlflow.png" alt="MLflow Overview" width="70%">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/mlflow/mlflow.png" alt="MLflow Overview" width="100%">
 </div>
 
 Giao diện Runs bên trong Experiment ltsf_baseline trên MLflow cho thấy toàn bộ các lần chạy (runs) được tạo ra từ pipeline của Airflow. Mỗi run tương ứng với một quy trình huấn luyện hoàn chỉnh, bao gồm toàn bộ thông số đầu vào, kết quả dự báo, metric đánh giá và mô hình sinh ra. Đây chính là nơi tập hợp toàn bộ kết quả cuối cùng sau khi DAG thực thi xong, giúp việc theo dõi và so sánh hiệu suất giữa các lần chạy trở nên trực quan và dễ kiểm soát.  
 
 <div align="center">
-  <img src="images/mlflow/tracking_result.png" alt="Tracking Result" width="70%">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/mlflow/tracking_result.png" alt="Tracking Result" width="100%">
 </div>
 
 Chi tiết của một lượt chạy (Run Detail View) trên MLflow đóng vai trò như “hồ sơ kỹ thuật” đầy đủ nhất cho một lần huấn luyện mô hình. Tất cả thông tin quan trọng đều được ghi lại tự động từ Airflow, bao gồm siêu tham số, giá trị metric, log trong quá trình chạy, file cấu hình và môi trường thực thi. Nhờ đó, mỗi run có thể được tái lập đúng trạng thái ban đầu hoặc được dùng làm mốc đối chiếu để cải thiện mô hình ở các lần thử tiếp theo.  
 
 <div align="center">
-  <img src="images/mlflow/check_mlflow.png" alt="Check MLflow" width="70%">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/mlflow/check_mlflow.png" alt="Check MLflow" width="100%">
 </div>
 
 MLflow cũng lưu lại toàn bộ artifact sinh ra trong quá trình huấn luyện. Các artifact có thể bao gồm biểu đồ loss, hình minh họa dự báo, file cấu hình, checkpoint mô hình hoặc phiên bản model đã được đóng gói theo chuẩn MLflow. Việc tập trung toàn bộ artifact tại một nơi giúp việc kiểm tra lại pipeline, phân tích lỗi hoặc tái sử dụng mô hình trở nên dễ dàng hơn.  
 
 <div align="center">
-  <img src="images/mlflow/mlflow_artifact.png" alt="MLflow Artifact" width="70%">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/mlflow/mlflow_artifact.png" alt="MLflow Artifact" width="100%">
 </div>
 
 Khi số lượng thí nghiệm trở nên lớn hơn, MLflow cung cấp giao diện so sánh trực quan giữa các lần chạy. Việc đặt các run cạnh nhau giúp người dùng đánh giá xem cấu hình nào đem lại kết quả tốt nhất, mô hình nào hội tụ nhanh hơn hoặc metric nào thực sự phản ánh chất lượng dự báo. Hai hình dưới đây minh họa giao diện so sánh cơ bản và giao diện so sánh chi tiết của MLflow.  
 
-<div style="display: flex; justify-content: center; align-items: flex-start;">
-  <img src="images/mlflow/mlflow_compare.png" alt="Compare Runs" style="width: 49%; margin-right: 10px;" />
-  <img src="images/mlflow/mlflow_compare2.png" alt="Compare Runs 2" style="width: 49%;" />
+<div align="center">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/mlflow/mlflow_compare.png" alt="MLflow Artifact" width="100%">
+</div>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/dauvannam1804/ltsf-transformer-mlops-pipeline/refs/heads/main/blog/images/mlflow/mlflow_compare2.png" alt="MLflow Artifact" width="100%">
 </div>
 
 ## 7. Kết quả thực nghiệm
 
-<div style="display: flex; justify-content: center; align-items: flex-start; margin-bottom: 15px;">
-  <img src="images/mlflow/result7d.png" alt="So sánh 7 ngày" style="width: 49%; margin-right: 10px;" />
-  <img src="images/mlflow/result30d.png" alt="So sánh 30 ngày" style="width: 49%;" />
-</div>
 
-<div style="display: flex; justify-content: center; align-items: flex-start;">
-  <img src="images/mlflow/result120d.png" alt="So sánh 120 ngày" style="width: 49%; margin-right: 10px;" />
-  <img src="images/mlflow/result480d.png" alt="So sánh 480 ngày" style="width: 49%;" />
-</div>
+
+| Run Name        | test_mae | test_mse | test_r2 | test_rmse | train_loss_last | val_loss_best | val_loss_last |
+|-----------------|----------|----------|---------|-----------|------------------|----------------|----------------|
+| Linear_7d       | 0.055    | 0.005    | 0.95    | 0.072     | 0.02             | 0.001          | 0.001          |
+| DLinear_7d      | 0.054    | 0.005    | 0.95    | 0.072     | 0.02             | 0.001          | 0.001          |
+| NLinear_7d      | 0.038    | 0.003    | 0.97    | 0.056     | 0.013            | 0.001          | 0.001          |
+| HLinear_7d      | 0.041    | 0.003    | 0.968   | 0.058     | 0.014            | 0.001          | 0.002          |
+| Linear_30d      | 0.06     | 0.006    | 0.927   | 0.078     | 0.021            | 0.001          | 0.001          |
+| DLinear_30d     | 0.055    | 0.005    | 0.94    | 0.071     | 0.019            | 0.001          | 0.001          |
+| NLinear_30d     | 0.04     | 0.003    | 0.96    | 0.058     | 0.013            | 0.001          | 0.001          |
+| HLinear_30d     | 0.052    | 0.005    | 0.943   | 0.07      | 0.016            | 0.001          | 0.001          |
+| Linear_120d     | 0.075    | 0.009    | 0.888   | 0.092     | 0.019            | 0.001          | 0.001          |
+| DLinear_120d    | 0.076    | 0.009    | 0.886   | 0.093     | 0.018            | 0.001          | 0.001          |
+| NLinear_120d    | 0.05     | 0.005    | 0.938   | 0.069     | 0.013            | 0.001          | 0.001          |
+| HLinear_120d    | 0.075    | 0.008    | 0.892   | 0.091     | 0.025            | 0.002          | 0.002          |
+| Linear_480d     | 0.146    | 0.027    | -0.045  | 0.163     | 0.014            | 0.016          | 0.021          |
+| DLinear_480d    | 0.195    | 0.044    | -0.747  | 0.211     | 0.011            | 0.019          | 0.02           |
+| NLinear_480d    | 0.058    | 0.006    | 0.755   | 0.079     | 0.01             | 0.01           | 0.012          |
+| HLinear_480d    | 0.642    | 0.436    | -16.17  | 0.66      | 0.04             | 0.071          | 0.102          |
+
+
 
 ---
 
@@ -378,7 +394,6 @@ Hai mô hình này có hiệu suất tương đương nhau ở các Horizon ng�
 
 Kết quả từ MLflow chứng minh rằng kiến trúc **NLinear** là lựa chọn **tối ưu nhất** cho dự án này, cung cấp **sai số thấp nhất** và thể hiện **độ bền bỉ** vượt trội khi đối mặt với nhu cầu **Dự báo chuỗi thời gian dài hạn (LTSF)**.
 
-
 ---
 
 ## 8. Bài Học Rút Ra từ Toàn Bộ Hệ Thống
@@ -425,9 +440,9 @@ Việc kết hợp các mô hình **LTSF-Linear** đã được chứng minh v�
 
 Từ mô hình cơ bản đến hệ thống hoàn chỉnh, đây là một hành trình thể hiện tinh thần kỹ thuật, tư duy rõ ràng và khả năng tổ chức bài toán theo chuẩn **MLOps thực chiến**.
 
-# Tài liệu và nguôn tham khảo
+# Tài liệu và nguồn tham khảo
 * [Common Challenges in Time Series Financial Forecasting](https://www.phoenixstrategy.group/blog/common-challenges-in-time-series-financial-forecasting)
 * [Time Series Forecasting AI: A Practical Guide](https://deepfa.ir/en/blog/time-series-forecasting-ai-practical-guide)
-* [GitHub Repository: LTSF-Linear - Source Code của các mô hình cơ sở](https://github.com/cure-lab/LTSF-Linear)
-* [Source Code: MLflow Integration và MLOps Setup (Project AIO)](https://github.com/ThuanNaN/aio2024-mlops/blob/main/Week-06-MLFlow)
+* [GitHub Repository: LTSF-Linear - Source Code tham khảo thêm các mô hình cơ sở](https://github.com/cure-lab/LTSF-Linear)
+* [Source Code tham khảo: MLflow Integration và MLOps Setup (Project AIO)](https://github.com/ThuanNaN/aio2024-mlops/blob/main/Week-06-MLFlow)
 * [Tài liệu AIO: Dự đoán chính xác cho dữ liệu time-series dùng NLinear và DLinear](https://www.facebook.com/share/p/1DNoHpRAZw/)
